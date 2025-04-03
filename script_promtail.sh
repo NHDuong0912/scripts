@@ -1,14 +1,24 @@
 #!/bin/bash
+set -e  # Dừng script nếu có lỗi xảy ra
 
-# Kiểm tra nếu không đủ tham số
+# Hàm xử lý lỗi và in thông báo lỗi cụ thể
+trap 'echo "Lỗi xảy ra: $?"' ERR
+
+# Kiểm tra số lượng tham số
 if [ $# -ne 3 ]; then
-  echo "Sử dụng: ./file.sh <PORT> <JOB_NAME> <LOG_PATH>"
+  echo "Sử dụng: ./script_promtail.sh <PORT> <JOB_NAME> <LOG_PATH>"
   exit 1
 fi
 
 PORT=$1
 JOB_NAME=$2
 LOG_PATH=$3
+
+# Kiểm tra nếu container với tên promtail đã tồn tại
+if docker ps -a --format '{{.Names}}' | grep -q "^promtail$"; then
+  echo "Container promtail đã tồn tại. Dừng và xóa container cũ."
+  docker rm -f promtail
+fi
 
 # Tạo file cấu hình promtail
 cat > promtail-config.yml <<EOL
@@ -32,7 +42,7 @@ scrape_configs:
           __path__: $LOG_PATH
 EOL
 
-# Chạy container Promtail với cấu hình động
+# Chạy Docker container Promtail với cấu hình động
 docker run -d --name=promtail \
   -p $PORT:9080 \
   -v $(pwd)/promtail-config.yml:/etc/promtail/promtail-config.yml \
