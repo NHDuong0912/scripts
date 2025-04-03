@@ -23,6 +23,7 @@ fi
 # Tạo file cấu hình promtail
 cat > promtail-config.yml <<EOL
 server:
+  http_listen_address: 0.0.0.0
   http_listen_port: 9080
   grpc_listen_port: 0
 
@@ -30,7 +31,7 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://<loki>:3100/loki/api/v1/push
+  - url: http://42.114.178.159:3100/loki/api/v1/push
 
 scrape_configs:
   - job_name: "$JOB_NAME"
