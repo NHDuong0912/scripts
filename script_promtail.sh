@@ -3,7 +3,6 @@
 # Kiểm tra nếu không đủ tham số
 if [ $# -ne 3 ]; then
   echo "Sử dụng: ./file.sh <PORT> <JOB_NAME> <LOG_PATH>"
-  echo "Ví dụ: ./file.sh 9090 namelogs /var/log/*.log"
   exit 1
 fi
 
