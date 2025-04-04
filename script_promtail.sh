@@ -44,6 +44,14 @@ scrape_configs:
           __path__: /logs/$(basename $LOG_PATH)
 EOL
 
+LOG_DIR=$(dirname "$LOG_PATH")
+
+# Kiểm tra xem thư mục chứa file log có tồn tại không, nếu không sẽ tạo thư mục đó
+if [ ! -d "$LOG_DIR" ]; then
+  echo "Thư mục chứa file log không tồn tại. Tạo thư mục $LOG_DIR."
+  mkdir -p "$LOG_DIR"
+fi
+
 # Chạy Docker container Promtail với cấu hình động
 docker run -d --name=promtail \
   -p $PORT:9080 \
