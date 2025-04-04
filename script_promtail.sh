@@ -40,6 +40,7 @@ scrape_configs:
           - localhost
         labels:
           job: "varlogs"
+          service: "logs_node"
           __path__: $LOG_PATH
 EOL
 
