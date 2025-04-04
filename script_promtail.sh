@@ -39,14 +39,15 @@ scrape_configs:
       - targets:
           - localhost
         labels:
-          job: "varlogs"
+          job: "$JOB_NAME"
           service: "logs_node"
-          __path__: $LOG_PATH
+          __path__: /logs/$(basename $LOG_PATH)
 EOL
 
 # Chạy Docker container Promtail với cấu hình động
 docker run -d --name=promtail \
   -p $PORT:9080 \
+  -v $LOG_DIR:/logs \
   -v $(pwd)/promtail-config.yml:/etc/promtail/promtail-config.yml \
   grafana/promtail -config.file=/etc/promtail/promtail-config.yml
 
