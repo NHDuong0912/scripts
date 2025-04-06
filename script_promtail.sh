@@ -18,6 +18,7 @@ LOG_PATH=$3
 if docker ps -a --format '{{.Names}}' | grep -q "^promtail$"; then
   echo "Container promtail đã tồn tại. Dừng và xóa container cũ."
   docker rm -f promtail
+  rm -rf $HOME/promtail-config.yml
 fi
 
 # Tạo file cấu hình promtail
