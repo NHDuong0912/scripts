@@ -32,7 +32,7 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://113.23.120.100:3100/loki/api/v1/push
+  - url: https://promtail.fatbeo.com/loki/api/v1/push
 
 scrape_configs:
   - job_name: "$JOB_NAME"
